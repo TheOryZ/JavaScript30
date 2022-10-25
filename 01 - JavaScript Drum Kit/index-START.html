@@ -58,7 +58,24 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+function removeTransition(e) { //step 1 remove all buttons playing css
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
+  }
 
+  function playSound(e) { // step 2 get audio and add css class for button
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if (!audio) return;
+
+    key.classList.add('playing'); //Added css to button
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+  const keys = Array.from(document.querySelectorAll('.key')); //Get all keys(buttons)
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)); //turn with loop and remove css class
+  window.addEventListener('keydown', playSound); //control keydown first step actually
 </script>
 
 
